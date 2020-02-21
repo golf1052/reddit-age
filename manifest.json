@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+    "name": "Reddit Account Age",
+    "version": "0.1",
+    "description": "Displays the age of reddit accounts next to their username",
+    "content_scripts": [
+        {
+            "matches": ["*://*.reddit.com/*"],
+            "js": ["main.js"]
+        }
+    ],
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "*://*.reddit.com/*"
+    ]
+}
