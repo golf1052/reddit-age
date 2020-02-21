@@ -1,3 +1,5 @@
+// this is largely derived from https://github.com/Mothrakk/NRMT
+
 const seenUsers = {};
 const announcementDate = Date.UTC(2015, 5, 15); // epoch milliseconds since this date
 const secondsInYear = 31557600;
