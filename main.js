@@ -1,4 +1,4 @@
-// this is largely derived from https://github.com/Mothrakk/NRMT
+// this is largely derived from https://github.com/Mothrakk/NRMT6
 
 const seenUsers = {};
 const announcementDate = Date.UTC(2015, 5, 15); // epoch milliseconds since this date
@@ -40,8 +40,17 @@ function createNode(username, createdAt) {
     const accountAge = getAccountAge(createdAt);
     const accountAgeString = getAccountAgeString(accountAge);
     node.appendChild(document.createTextNode(accountAgeString));
-    if (createdAt * 1000 >= announcementDate) {
-        node.setAttribute('style', 'color: #ffffff; background-color: #ff0000; border-radius:5px; padding:2px; margin:3px;');
+    const createdAtInMilliseconds = createdAt * 1000;
+    const now = Date.now();
+    if (createdAtInMilliseconds >= announcementDate) {
+        // a newly created account produces a scale close to 1, an account created on the announcement date produces a scale close to 0
+        const scale = (createdAtInMilliseconds - announcementDate) / (now - announcementDate);
+        // for background color red = new, white = old. 255 * 0 produces red, 255 * 1 produces white
+        const backgroundScale = 1 - scale;
+        const backgroundOtherColor = 255 * backgroundScale;
+        // for text color white should pair with a red background and black should match with a white background
+        const textColor = 255 * (1 - Math.pow(backgroundScale, 2));
+        node.setAttribute('style', `color: rgb(${textColor}, ${textColor}, ${textColor}); background-color: rgb(255, ${backgroundOtherColor}, ${backgroundOtherColor}); border-radius:5px; padding:2px; margin:3px;`);
     }
     node.className = "reddit_age";
     seenUsers[username] = node;
